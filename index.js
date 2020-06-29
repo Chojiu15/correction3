@@ -3,7 +3,7 @@ const models = require('./models')
 const app = express()
 const bodyParser = require('body-parser')
 
-app.use(bodyParser({
+app.use(bodyParser.urlencoded({
     extended : true
 }))
 

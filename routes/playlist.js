@@ -16,6 +16,19 @@ playlistRouter.post('/playlist', (req, res) => {
         })
 })
 
+
+playlistRouter.delete('/playlist/:playlistId/remove-track/:trackId', (req, res) => {
+    models
+        .Playlist
+        .findByPk(req.params.playlistId)
+        .then(track => {
+            track.removeTrack(req.params.trackId)
+        })
+        res.end('Track deleted')
+})
+
+
+
 playlistRouter.get('/playlist/:id', (req, res) => {
     models
         .Playlist
@@ -26,37 +39,37 @@ playlistRouter.get('/playlist/:id', (req, res) => {
 })
 
 playlistRouter.get('/playlist', (req, res) => {
-    if(req.query.title){
+    if (req.query.title) {
         models
             .Playlist
             .findAll({
-                where : {
-                    title : {
-                        [Op.like] : `%${req.query.title}%`
+                where: {
+                    title: {
+                        [Op.like]: `%${req.query.title}%`
                     }
                 },
-                include :[models.Track]
+                include: [models.Track]
             })
             .then(playlist => res.json(playlist))
     }
-    else if(req.query.genre){
+    else if (req.query.genre) {
         models
             .Playlist
             .findAll({
-                    where : {
-                        genre : {
-                            [Op.like] : `%${req.query.genre}%`
-                        }
-                    },
-                    include : [models.Track]
+                where: {
+                    genre: {
+                        [Op.like]: `%${req.query.genre}%`
+                    }
+                },
+                include: [models.Track]
             })
             .then(playlist => res.json(playlist))
     }
-    else{
+    else {
         models
             .Playlist
             .findAll({
-                include : [models.Track]
+                include: [models.Track]
             })
             .then(playlist => res.json(playlist))
     }

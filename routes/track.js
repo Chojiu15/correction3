@@ -17,6 +17,26 @@ trackRouter.post('/track', (req, res) => {
         })
 })
 
+trackRouter.put('/track/:id', (req, res) => {
+    models
+        .Track
+        .update(req.body, {
+            where : {
+                id : req.params.id
+            }
+        })
+        .then(res.send('Ok'))
+})
+
+trackRouter.get('/track/:id', (req, res) => {
+    models
+        .Track
+        .findByPk(req.params.id, {
+            include: [models.Playlist]
+        })
+        .then(playlist => res.json(playlist))
+})
+
 trackRouter.get('/track', (req, res) => {
     if(req.query.title){
         models
